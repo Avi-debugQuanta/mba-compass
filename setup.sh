@@ -40,14 +40,14 @@ fi
 say "3/6  Database"
 if grep -q 'PASTE_YOUR_D1_DATABASE_ID_HERE' wrangler.toml; then
   echo "  creating D1 database…"
-  OUT=$($WR d1 create mba-compass 2>&1) || true
+  OUT=$($WR d1 create mbacompass 2>&1) || true
   ID=$(printf '%s' "$OUT" | grep -oE '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | head -1)
   if [ -z "$ID" ]; then
     # Already exists from a previous run — look it up instead.
     ID=$($WR d1 list --json 2>/dev/null | node -e \
-      'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{const m=JSON.parse(s).find(x=>x.name==="mba-compass");if(m)console.log(m.uuid)}catch{}})')
+      'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{const m=JSON.parse(s).find(x=>x.name==="mbacompass");if(m)console.log(m.uuid)}catch{}})')
   fi
-  [ -n "$ID" ] || die "Could not create or find the D1 database. Run '$WR d1 create mba-compass' by hand and paste the id into worker/wrangler.toml."
+  [ -n "$ID" ] || die "Could not create or find the D1 database. Run '$WR d1 create mbacompass' by hand and paste the id into worker/wrangler.toml."
   perl -pi -e "s/PASTE_YOUR_D1_DATABASE_ID_HERE/$ID/" wrangler.toml
   ok "database ready ($ID)"
 else

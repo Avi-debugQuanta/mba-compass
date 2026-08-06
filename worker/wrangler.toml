@@ -15,5 +15,5 @@ GOOGLE_CLIENT_ID = "731324902040-ul9ao0h6jbfq1ppam5peq19e5vdbm8gp.apps.googleuse
 
 [[d1_databases]]
 binding = "DB"
-database_name = "mba-compass"
-database_id = "PASTE_YOUR_D1_DATABASE_ID_HERE"
+database_name = "mbacompass"
+database_id = "816fe0ac-1f21-41c1-9908-4e6aab147aa5"
