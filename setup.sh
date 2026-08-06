@@ -60,14 +60,14 @@ echo "  ${DIM}These go straight to Cloudflare. They are not saved locally and no
 
 have_secret() { $WR secret list 2>/dev/null | grep -q "\"$1\""; }
 
-if have_secret ANTHROPIC_API_KEY; then
-  ok "ANTHROPIC_API_KEY already set  ${DIM}(delete & re-run to change)${OFF}"
+if have_secret GROQ_API_KEY; then
+  ok "GROQ_API_KEY already set  ${DIM}(delete & re-run to change)${OFF}"
 else
   echo
-  echo "  Paste your Anthropic API key (console.anthropic.com → API keys)."
+  echo "  Paste your Groq API key (console.groq.com → API Keys)."
   echo "  ${DIM}It will not appear as you type.${OFF}"
-  $WR secret put ANTHROPIC_API_KEY || die "Failed to set ANTHROPIC_API_KEY"
-  ok "ANTHROPIC_API_KEY stored, encrypted"
+  $WR secret put GROQ_API_KEY || die "Failed to set GROQ_API_KEY"
+  ok "GROQ_API_KEY stored, encrypted"
 fi
 
 if have_secret ALLOWED_EMAILS; then

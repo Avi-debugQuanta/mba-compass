@@ -8,7 +8,7 @@
     "tail": "wrangler tail"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.115.0"
+    "groq-sdk": "^1.5.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250109.0",

@@ -3,7 +3,7 @@
 
    No API key exists in this file or anywhere else in the browser.
    The browser sends a Google ID token; the worker verifies it,
-   checks the email allowlist, and only then calls Anthropic with
+   checks the email allowlist, and only then calls Groq with
    the key it holds server-side.
    ============================================================ */
 'use strict';
@@ -304,7 +304,7 @@ function renderConsultant(err) {
       <div class="card" style="max-width:640px">
         <p class="eyebrow">Connect</p>
         <h3 style="font-size:18px;margin:8px 0 6px">Point this at your worker</h3>
-        <p class="dim" style="font-size:13.5px;margin-bottom:16px">Both values below are public by design. Your Anthropic key is <b>not</b> one of them — it lives encrypted on the worker and never reaches this browser. See <code>worker/README.md</code> for the fifteen-minute setup.</p>
+        <p class="dim" style="font-size:13.5px;margin-bottom:16px">Both values below are public by design. Your Groq key is <b>not</b> one of them — it lives encrypted on the worker and never reaches this browser. See <code>worker/README.md</code> for the fifteen-minute setup.</p>
         <div class="stack" style="gap:12px">
           <label class="fld"><span>Worker URL</span><input type="text" id="cfgUrl" placeholder="https://mba-compass-api.<you>.workers.dev" value="${mdEsc(AI.cfg.workerUrl || '')}"></label>
           <label class="fld"><span>Google client ID</span><input type="text" id="cfgGid" placeholder="…apps.googleusercontent.com" value="${mdEsc(AI.cfg.googleClientId || '')}"></label>

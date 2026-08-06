@@ -109,7 +109,9 @@ With the worker connected and signed in, **Sync workspace** pushes your profile,
 
 ## The API key
 
-**It is not in this repo and it never reaches the browser.** It lives as an encrypted Cloudflare Worker secret. The browser sends a Google ID token; the worker verifies the signature against Google's public keys, checks the audience and expiry, checks the email against an allowlist, and only then calls Anthropic.
+**It is not in this repo and it never reaches the browser.** It lives as an encrypted Cloudflare Worker secret. The browser sends a Google ID token; the worker verifies the signature against Google's public keys, checks the audience and expiry, checks the email against an allowlist, and only then calls Groq.
+
+The model is `openai/gpt-oss-120b` on Groq — an open model, not Claude. It is fast and near-free, and it invents biographical detail more readily than a frontier model, so the agents carry an explicit anti-fabrication rule and are told to write `[BRACKETS]` rather than guess a number. Treat everything it says about her background as something to verify, not to quote.
 
 Encrypting a key inside a web app doesn't work — whatever decrypts it ships alongside it, so anyone reads both from DevTools. The only real protection is the key never being there. Setup: [`worker/README.md`](worker/README.md).
 

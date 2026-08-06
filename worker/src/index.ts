@@ -1,20 +1,20 @@
 /* ============================================================
    MBA COMPASS — API worker
 
-   The Anthropic key lives here as an encrypted Cloudflare secret.
+   The Groq key lives here as an encrypted Cloudflare secret.
    It is never sent to the browser and never appears in the repo.
 
    Every request is gated: the browser sends a Google ID token, this
    worker verifies the signature against Google's public keys, checks
    the audience and expiry, and checks the email against an allowlist
-   held in an environment variable. Only then does it call Anthropic.
+   held in an environment variable. Only then does it call Groq.
    ============================================================ */
 
-import Anthropic from "@anthropic-ai/sdk";
 import { AGENTS, getAgent, buildSystem } from "./agents";
+import { MODEL, streamChat as llmStream, friendlyError } from "./llm";
 
 export interface Env {
-  ANTHROPIC_API_KEY: string;   // wrangler secret — encrypted at rest
+  GROQ_API_KEY: string;        // wrangler secret — encrypted at rest
   GOOGLE_CLIENT_ID: string;    // public by design
   ALLOWED_EMAILS: string;      // comma-separated, set as a secret
   CANDIDATE_BRIEF?: string;    // her profile — secret, never in the repo
@@ -144,41 +144,18 @@ async function ensureSchema(env: Env) {
   ]);
 }
 
-/* ---------- Anthropic ---------------------------------------- */
-
-const MODEL = "claude-opus-5";
+/* ---------- chat ---------------------------------------------- */
 
 async function streamChat(env: Env, who: Identity, body: any): Promise<Response> {
   const agent = getAgent(body.agentId);
   if (!agent) return json({ error: "unknown agent" }, 400);
 
-  const history: Anthropic.MessageParam[] = Array.isArray(body.messages)
-    ? body.messages
-        .filter((m: any) => (m.role === "user" || m.role === "assistant") && typeof m.content === "string" && m.content.trim())
-        .slice(-40)
-        .map((m: any) => ({ role: m.role, content: m.content.slice(0, 24000) }))
-    : [];
-  if (!history.length || history[0].role !== "user") return json({ error: "need a user message" }, 400);
-
-  const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
-
-  // Her live workspace state, so the agent argues from her real material.
-  const ctx = typeof body.context === "string" ? body.context.slice(0, 40000) : "";
-
-  const stream = client.beta.messages.stream({
-    model: MODEL,
-    max_tokens: 32000,
-    betas: ["server-side-fallback-2026-07-01"],
-    fallbacks: "default",
-    thinking: { type: "adaptive" },
-    output_config: { effort: "high" },
-    system: [
-      // Stable prefix, cached — the agent brief and candidate file don't change.
-      { type: "text", text: buildSystem(agent, env.CANDIDATE_BRIEF || ""), cache_control: { type: "ephemeral" } },
-      ...(ctx ? [{ type: "text" as const, text: `\n\nHER CURRENT WORKSPACE (live, may be partial):\n${ctx}` }] : []),
-    ],
-    messages: history,
-  });
+  const history = (Array.isArray(body.messages) ? body.messages : [])
+    .filter((m: any) => (m.role === "user" || m.role === "assistant") && typeof m.content === "string" && m.content.trim())
+    .slice(-30)
+    .map((m: any) => ({ role: m.role as "user" | "assistant", content: m.content.slice(0, 20000) }));
+  if (!history.length || history[history.length - 1].role !== "user")
+    return json({ error: "need a user message last" }, 400);
 
   const encoder = new TextEncoder();
   const rs = new ReadableStream({
@@ -186,25 +163,28 @@ async function streamChat(env: Env, who: Identity, body: any): Promise<Response>
       const send = (o: unknown) => controller.enqueue(encoder.encode(`data: ${JSON.stringify(o)}\n\n`));
       let full = "";
       try {
-        for await (const ev of stream) {
-          if (ev.type === "content_block_delta" && ev.delta.type === "text_delta") {
-            full += ev.delta.text;
-            send({ t: "d", v: ev.delta.text });
-          }
-        }
-        const final = await stream.finalMessage();
+        const stream = await llmStream({
+          apiKey: env.GROQ_API_KEY,
+          system: buildSystem(agent, env.CANDIDATE_BRIEF || ""),
+          history,
+          context: typeof body.context === "string" ? body.context.slice(0, 30000) : undefined,
+        });
 
-        if (final.stop_reason === "refusal") {
-          send({ t: "e", v: "That request was declined by the safety system. Rephrase it and try again." });
+        let usage: any = null;
+        for await (const chunk of stream as any) {
+          const delta = chunk?.choices?.[0]?.delta?.content;
+          if (delta) { full += delta; send({ t: "d", v: delta }); }
+          if (chunk?.x_groq?.usage) usage = chunk.x_groq.usage;
         }
-        send({ t: "done", usage: { in: final.usage.input_tokens, out: final.usage.output_tokens } });
 
-        // Persist after the stream so a slow write never stalls the UI.
+        if (!full.trim()) send({ t: "e", v: "The model returned nothing. Try rephrasing." });
+        send({ t: "done", usage: usage ? { in: usage.prompt_tokens, out: usage.completion_tokens } : null });
+
         if (body.threadId && full) {
           const now = Date.now();
           await env.DB.batch([
             env.DB.prepare(`INSERT INTO messages (thread_id, role, content, created_at) VALUES (?,?,?,?)`)
-              .bind(body.threadId, "user", history[history.length - 1].content as string, now),
+              .bind(body.threadId, "user", history[history.length - 1].content, now),
             env.DB.prepare(`INSERT INTO messages (thread_id, role, content, created_at) VALUES (?,?,?,?)`)
               .bind(body.threadId, "assistant", full, now + 1),
             env.DB.prepare(`UPDATE threads SET updated_at=? WHERE id=? AND email=?`)
@@ -212,15 +192,7 @@ async function streamChat(env: Env, who: Identity, body: any): Promise<Response>
           ]);
         }
       } catch (err: any) {
-        const msg =
-          err instanceof Anthropic.RateLimitError
-            ? "Rate limited. Wait a moment and try again."
-            : err instanceof Anthropic.AuthenticationError
-              ? "The API key on the server is invalid. Re-run: wrangler secret put ANTHROPIC_API_KEY"
-              : err instanceof Anthropic.APIError
-                ? `Anthropic error ${err.status}: ${err.message}`
-                : `Something went wrong: ${err?.message || err}`;
-        send({ t: "e", v: msg });
+        send({ t: "e", v: friendlyError(err) });
       } finally {
         controller.close();
       }

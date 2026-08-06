@@ -1,12 +1,12 @@
 # The API worker
 
-This holds the Anthropic key and decides who is allowed to use it. Roughly fifteen minutes to set up, then you never touch it again.
+This holds the Groq API key and decides who is allowed to use it. Roughly fifteen minutes to set up, then you never touch it again.
 
 ## Why the key can't just be encrypted in the app
 
 A browser app that decrypts a key has to ship the decryption key too. Anyone opens DevTools, takes both, and uses your key on your bill. That's not a flaw in a particular scheme — it's why DRM keeps getting broken. Obfuscation raises the effort from *seconds* to *minutes*; it does not make the key secret.
 
-So the key never goes to the browser. It sits here as a Cloudflare secret — encrypted at rest, and **not readable after upload by anyone, including you**. The browser sends a Google ID token instead; this worker verifies the signature against Google's public keys, checks the audience and expiry, checks the email against your allowlist, and only then calls Anthropic.
+So the key never goes to the browser. It sits here as a Cloudflare secret — encrypted at rest, and **not readable after upload by anyone, including you**. The browser sends a Google ID token instead; this worker verifies the signature against Google's public keys, checks the audience and expiry, checks the email against your allowlist, and only then calls Groq.
 
 Someone who clones the repo gets the app and no key. Someone who signs in with a Google account you haven't allowlisted gets a 401 from the server — the refusal isn't a hidden button, it's the absence of a key on their side of the wire.
 
@@ -46,7 +46,7 @@ The client ID is already filled into `wrangler.toml`. It is public by design; it
 ### 3. The two secrets
 
 ```bash
-wrangler secret put ANTHROPIC_API_KEY     # paste the key, press enter
+wrangler secret put GROQ_API_KEY          # paste the key, press enter
 wrangler secret put ALLOWED_EMAILS        # the two Gmail addresses, comma-separated
 wrangler secret put CANDIDATE_BRIEF < candidate-brief.txt
 ```
@@ -67,7 +67,11 @@ It prints a URL like `https://mba-compass-api.<you>.workers.dev`. Open the app �
 
 ## Cost
 
-Cloudflare Workers and D1 are free at this scale (100k requests/day, 5GB). You pay Anthropic for tokens: Claude Opus 5 is $5 per million in, $25 per million out. The agent system prompts are cached, so a follow-up message in the same conversation costs roughly a tenth of the first on the cached portion.
+Cloudflare Workers and D1 are free at this scale (100k requests/day, 5GB).
+
+Groq runs `openai/gpt-oss-120b` at $0.15 per million input tokens ($0.075 cached) and $0.60 per million output — roughly 1p a message, and the free tier covers light use outright. Groq caches a stable prompt prefix automatically, which is why the agent system prompt never changes between turns and volatile workspace data rides on the last user message instead.
+
+**Free-tier caveat:** Groq caps tokens per minute. A long conversation resends its whole history each turn, so heavy back-and-forth can trip a 429. The app surfaces that as a plain "wait about a minute" message rather than failing silently. Adding billing removes the cap.
 
 ## Adding or removing access
 
@@ -89,7 +93,8 @@ curl https://<your-worker>/api/health
 | `401 not authorised: not on the allowlist` | Email isn't in `ALLOWED_EMAILS` — check for typos and spaces |
 | `401 wrong audience` | `GOOGLE_CLIENT_ID` in `wrangler.toml` doesn't match the one the app is using |
 | Sign-in button doesn't appear | Origin missing from the OAuth client's authorised JavaScript origins |
-| `The API key on the server is invalid` | Re-run `wrangler secret put ANTHROPIC_API_KEY` |
+| `The Groq key on the server is rejected` | Re-run `wrangler secret put GROQ_API_KEY` |
+| `Groq rate limit hit` | Free tier caps tokens per minute. Wait a minute, or add billing at console.groq.com |
 | CORS error | Add your origin to `ALLOWED_ORIGINS` in `src/index.ts` and redeploy |
 
 ## What's stored
