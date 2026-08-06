@@ -8,8 +8,16 @@
    ============================================================ */
 'use strict';
 
+/* Both values are public by design: a worker URL and a Google client ID.
+   Neither grants access — the worker checks a signed Google identity
+   against a secret allowlist before it will do anything. */
+const DEFAULT_CFG = {
+  workerUrl: 'https://mba-compass-api.avipriyaghosh.workers.dev',
+  googleClientId: '731324902040-ul9ao0h6jbfq1ppam5peq19e5vdbm8gp.apps.googleusercontent.com',
+};
+
 const AI = {
-  cfg: JSON.parse(localStorage.getItem('mba-compass-cfg') || '{}'),
+  cfg: Object.assign({}, DEFAULT_CFG, JSON.parse(localStorage.getItem('mba-compass-cfg') || '{}')),
   token: null,
   me: null,
   agents: [],

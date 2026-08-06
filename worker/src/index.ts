@@ -171,13 +171,26 @@ async function streamChat(env: Env, who: Identity, body: any): Promise<Response>
         });
 
         let usage: any = null;
+        let reasoned = 0;
+        let finish: string | null = null;
         for await (const chunk of stream as any) {
-          const delta = chunk?.choices?.[0]?.delta?.content;
+          const c = chunk?.choices?.[0];
+          const delta = c?.delta?.content;
           if (delta) { full += delta; send({ t: "d", v: delta }); }
+          if (c?.delta?.reasoning) reasoned += c.delta.reasoning.length;
+          if (c?.finish_reason) finish = c.finish_reason;
           if (chunk?.x_groq?.usage) usage = chunk.x_groq.usage;
         }
 
-        if (!full.trim()) send({ t: "e", v: "The model returned nothing. Try rephrasing." });
+        // gpt-oss reasons before it answers. If the budget ran out mid-reasoning
+        // there is no visible answer at all — say so rather than showing a blank.
+        if (!full.trim()) {
+          send({ t: "e", v: reasoned > 0
+            ? "The model spent its whole budget reasoning and never got to an answer. Ask something narrower, or split the question."
+            : "The model returned nothing. Try rephrasing." });
+        } else if (finish === "length") {
+          send({ t: "e", v: "Response hit the length cap and was cut off. Ask for the rest, or narrow the question." });
+        }
         send({ t: "done", usage: usage ? { in: usage.prompt_tokens, out: usage.completion_tokens } : null });
 
         if (body.threadId && full) {

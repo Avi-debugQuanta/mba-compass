@@ -13,6 +13,11 @@
    - An open model invents biographical detail far more readily
      than Claude, so the anti-fabrication rule is restated at the
      end of the prompt where it carries most weight.
+   - gpt-oss is a reasoning model: it streams `delta.reasoning`
+     before `delta.content`, typically 4x more of it. We forward
+     only content, so the UI sits on its typing indicator for a
+     few seconds first, and max_completion_tokens has to cover
+     both or the visible answer gets truncated.
    ============================================================ */
 
 import Groq from "groq-sdk";
@@ -66,7 +71,7 @@ export async function streamChat({ apiKey, system, history, context }: ChatArgs)
     messages,
     temperature: 0.6,
     top_p: 0.95,
-    max_completion_tokens: 16000,
+    max_completion_tokens: 32000,
     stream: true as const,
   };
 
