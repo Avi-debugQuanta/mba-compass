@@ -1,0 +1,19 @@
+name = "mba-compass-api"
+main = "src/index.ts"
+compatibility_date = "2026-08-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Public by design — a Google client ID is not a secret.
+[vars]
+GOOGLE_CLIENT_ID = "731324902040-l21jb2hrog2n9pq8htidvgub8r84r3eq.apps.googleusercontent.com"
+
+# The two secrets are NOT in this file. Set them once with:
+#   wrangler secret put ANTHROPIC_API_KEY
+#   wrangler secret put ALLOWED_EMAILS
+# Cloudflare encrypts both at rest. After upload they cannot be read back —
+# not by the dashboard, not by `wrangler`, not by anyone with repo access.
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mba-compass"
+database_id = "PASTE_YOUR_D1_DATABASE_ID_HERE"

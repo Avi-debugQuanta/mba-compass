@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0E15">
+<meta name="description" content="A private MBA decision and application workspace — school explorer, path finder, real interview questions, practice mode and an essay workshop.">
+<title>MBA Compass</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23F2A65A'/><text y='72' x='50' font-size='58' text-anchor='middle' font-family='Georgia,serif' fill='%2314100A'>C</text></svg>">
+</head>
+<body>
+
+<svg style="display:none">
+  <symbol id="i-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></symbol>
+  <symbol id="i-school" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></symbol>
+  <symbol id="i-path" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5M12 3v12"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></symbol>
+</svg>
+
+<div class="app">
+  <aside class="nav">
+    <div class="brand">
+      <div class="logo"><span class="dot">C</span> MBA Compass</div>
+      <div class="sub" id="brandSub">Your workspace</div>
+    </div>
+    <nav class="navlist" id="navlist"></nav>
+    <div class="navfoot">
+      <button class="iconbtn" id="themeBtn" title="Toggle theme" aria-label="Toggle theme"><svg><use href="#i-sun"/></svg></button>
+      <button class="iconbtn" id="exportBtn" title="Export all my data" aria-label="Export data"><svg><use href="#i-dl"/></svg></button>
+      <button class="iconbtn" id="importBtn" title="Import data" aria-label="Import data"><svg><use href="#i-up"/></svg></button>
+      <input type="file" id="importFile" accept="application/json" hidden>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="crumb" id="crumb">Advisor</span>
+      <h1 id="vtitle">Where things stand</h1>
+      <span class="spacer"></span>
+      <span class="tag mono" id="savedTag">saved locally</span>
+    </div>
+
+    <main>
+      <!-- ============ ADVISOR ============ -->
+      <section class="view" id="v-advisor">
+        <div class="stack">
+          <div class="card" style="background:linear-gradient(150deg,var(--surf),var(--surf-2))">
+            <p class="eyebrow">The short answer</p>
+            <h2 style="font-size:clamp(22px,3.2vw,32px);margin:10px 0 12px" id="headline">Build the plan around INSEAD and London Business School. Treat the US M7 as upside.</h2>
+            <p class="muted" style="max-width:74ch" id="headsub">Every constraint you named — home before your early thirties, loan cleared first, a brand that means something in India, real MBB access, and a change of domain — has exactly one geometry that satisfies all of them at once: a one-year European MBA with genuine strategy placement.</p>
+            <div class="grid g4" style="margin-top:18px" id="heroTiles"></div>
+          </div>
+
+          <div class="card">
+            <p class="eyebrow">Ask</p>
+            <h2 style="font-size:20px;margin:8px 0 4px">What do you want to know?</h2>
+            <p class="dim" style="font-size:13.5px;margin-bottom:14px">Answers come from a written knowledge base — timing, loans, visas, schools, essays, interviews, the career switch. If nothing matches, it gets saved to your open-questions list.</p>
+            <div class="asker">
+              <input type="search" id="askInput" placeholder="e.g. how long will the loan take to repay?" autocomplete="off">
+              <button id="askBtn" aria-label="Ask"><svg><use href="#i-send"/></svg></button>
+            </div>
+            <div id="askOut" style="margin-top:16px"></div>
+            <p class="dim mono" style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin:18px 0 8px">Common questions</p>
+            <div class="suggest" id="suggest"></div>
+          </div>
+
+          <div class="grid g2">
+            <div class="card">
+              <p class="eyebrow">Your open questions</p>
+              <h2 style="font-size:18px;margin:8px 0 10px">Things to bring back to Claude</h2>
+              <p class="dim" style="font-size:13px;margin-bottom:12px">Anything the knowledge base couldn't answer lands here. Export and paste the list into a chat to get them answered properly.</p>
+              <div id="openQs"></div>
+              <div class="row" style="margin-top:12px">
+                <input type="text" id="newQ" placeholder="Add a question…" style="flex:1;min-width:160px">
+                <button class="btn sm" id="addQ"><svg><use href="#i-plus"/></svg>Add</button>
+              </div>
+            </div>
+            <div class="card">
+              <p class="eyebrow">Profile scorecard</p>
+              <h2 style="font-size:18px;margin:8px 0 12px">Rated the way a Round 1 reader rates you</h2>
+              <div id="scorecard"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <p class="eyebrow">Reality check</p>
+            <h2 style="font-size:18px;margin:8px 0 12px">What this app is and isn't</h2>
+            <p class="muted" style="font-size:14px">Every number here is researched and dated — class profiles, fees, deadlines, visa rules, employment reports. The <b>admit probabilities are modelled judgements</b>, not measurements: base rates adjusted for the Indian sub-pool and for your specific profile. They assume a top-quartile application.</p>
+            <p class="muted" style="font-size:14px;margin-top:10px">The advisor answers from a written knowledge base — it is not a live AI and it will not invent an answer it doesn't have. <b>Verify every deadline on the school's own site before you rely on it.</b> Several European programmes run rolling rounds that shift year to year.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SCHOOLS ============ -->
+      <section class="view" id="v-schools" hidden>
+        <div class="sechead"><h2>School explorer</h2><span class="tag mono" id="schoolCount"></span></div>
+        <p class="dek">Twenty-two programmes ranked against your objectives, not a magazine. Change what you're optimising for and the order changes — because the right school genuinely does depend on which constraint binds hardest. Tap any school for the full file.</p>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px">
+            <label class="fld"><span>Optimise for</span><select id="preset"></select></label>
+            <label class="fld"><span>Career track</span><select id="trackFilter"></select></label>
+            <label class="fld"><span>View</span><select id="viewMode"><option value="cards">Cards</option><option value="table">Table</option></select></label>
+            <label class="fld"><span>Search</span><input type="search" id="schoolSearch" placeholder="Name, tag, recruiter…"></label>
+          </div>
+          <div class="row" style="margin-top:12px">
+            <div class="row" id="fRegion" style="gap:6px"></div>
+            <span class="dim">·</span>
+            <div class="row" id="fLen" style="gap:6px"></div>
+            <span class="dim">·</span>
+            <button class="chip" id="fStar" aria-pressed="false">★ Shortlist only</button>
+          </div>
+        </div>
+
+        <div id="cardsWrap" class="grid g2"></div>
+        <div id="tableWrap" class="tw" hidden>
+          <table id="sTable">
+            <thead><tr>
+              <th class="srt" data-k="name">School</th>
+              <th class="n srt" data-k="fit">Fit</th>
+              <th class="n srt" data-k="months">Length</th>
+              <th class="n srt" data-k="costCr">Cost ₹Cr</th>
+              <th class="n srt" data-k="oddsMid">Odds</th>
+              <th class="n srt" data-k="consulting">Consulting</th>
+              <th class="n srt" data-k="classSize">Class</th>
+              <th class="n srt" data-k="brandIndia">India brand</th>
+              <th class="srt" data-k="deadlineSort">Deadline</th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ PATH FINDER ============ -->
+      <section class="view" id="v-path" hidden>
+        <div class="sechead"><h2>Path finder</h2></div>
+        <p class="dek">You said you might want out of consulting into something creative — marketing, or something engaging you could eventually build a business from. Twelve questions, nine tracks, honest scoring. It uses your answers, not my guesses, and it tells you how hard each switch actually is.</p>
+        <div id="pathBody"></div>
+      </section>
+
+      <!-- ============ INTERVIEW VAULT ============ -->
+      <section class="view" id="v-vault" hidden>
+        <div class="sechead"><h2>Interview vault</h2><span class="tag mono" id="qCount"></span></div>
+        <p class="dek">Real questions, sourced two ways. <span class="tag good">reported</span> means documented candidate reports from the Poets&amp;Quants January 2026 school-by-school list and Clear Admit interview reports. <span class="tag warn">format-based</span> means derived from each school's published interview format — expect variants, not verbatim.</p>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
+            <label class="fld"><span>School</span><select id="vSchool"></select></label>
+            <label class="fld"><span>Question type</span><select id="vType"></select></label>
+            <label class="fld"><span>Search</span><input type="search" id="vSearch" placeholder="Search questions…"></label>
+          </div>
+          <div class="row" style="margin-top:12px">
+            <button class="chip" id="vStar" aria-pressed="false">★ Starred only</button>
+            <button class="btn sm" id="vPractice"><svg><use href="#i-play"/></svg>Practise these</button>
+          </div>
+        </div>
+
+        <div class="card flush"><div id="vList" style="padding:4px 20px"></div></div>
+
+        <div class="card" style="margin-top:16px">
+          <p class="eyebrow">Add your own</p>
+          <p class="dim" style="font-size:13px;margin:6px 0 10px">Heard a question from an alum or a forum? Add it — it goes into the vault and the practice pool.</p>
+          <div class="row">
+            <input type="text" id="ownQ" placeholder="The question…" style="flex:1;min-width:200px">
+            <select id="ownSchool" style="width:auto;min-width:150px"></select>
+            <button class="btn primary sm" id="addOwnQ">Add</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ANSWERS ============ -->
+      <section class="view" id="v-answers" hidden>
+        <div class="sechead"><h2>Answers</h2><span class="tag mono" id="ansCount"></span></div>
+        <p class="dek">The method the big firms actually use: fourteen stories answer almost every question. Build the stories once, then map them. Model answers below are written from your real profile — <b>[SQUARE BRACKETS] are facts only you know</b> and are deliberately blank. A model answer with invented numbers would get used, and that would be worse than nothing.</p>
+        <div class="row" id="ansTabs" style="margin-bottom:18px">
+          <button class="chip" data-at="stories" aria-pressed="true">Story bank</button>
+          <button class="chip" data-at="model" aria-pressed="false">Model answers</button>
+          <button class="chip" data-at="method" aria-pressed="false">How consultants work</button>
+        </div>
+        <div id="ansBody"></div>
+      </section>
+
+      <!-- ============ PRACTICE ============ -->
+      <section class="view" id="v-practice" hidden>
+        <div class="sechead"><h2>Practice</h2><span class="tag mono" id="pStats"></span></div>
+        <p class="dek">Answer out loud. Ninety seconds is the target for a behavioural answer, sixty for a "why us". Rate yourself honestly — the point is to find the three stories you can't tell well yet.</p>
+        <div id="practiceBody"></div>
+      </section>
+
+      <!-- ============ ESSAYS ============ -->
+      <section class="view" id="v-essays" hidden>
+        <div class="sechead"><h2>Essay workshop</h2></div>
+        <p class="dek">Real 2026–27 prompts per school. Write here — it saves as you type. The checker on the right flags the seven patterns that most often sink strong applications. It is a mirror, not a marker.</p>
+        <div class="card" style="margin-bottom:16px">
+          <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+            <label class="fld"><span>School</span><select id="eSchool"></select></label>
+            <label class="fld"><span>Prompt</span><select id="ePrompt"></select></label>
+          </div>
+        </div>
+        <div class="essaywrap">
+          <div class="stack">
+            <div class="card">
+              <p class="eyebrow">Prompt</p>
+              <p id="ePromptText" style="margin-top:8px;font-family:var(--serif);font-size:16.5px"></p>
+              <p class="dim mono" style="font-size:11px;margin-top:8px" id="ePromptWords"></p>
+              <div id="eProv" style="margin-top:12px"></div>
+            </div>
+            <textarea id="eText" placeholder="Start writing. It saves automatically."></textarea>
+            <div class="row">
+              <span class="tag mono" id="eCount">0 words</span>
+              <span class="spacer"></span>
+              <button class="btn sm" id="eCopy">Copy</button>
+              <button class="btn sm" id="eClear">Clear</button>
+            </div>
+          </div>
+          <div class="card">
+            <p class="eyebrow">Checker</p>
+            <h3 style="font-size:16px;margin:8px 0 6px">Seven things adcoms notice</h3>
+            <div id="eRules"></div>
+            <hr class="sep" style="margin:16px 0">
+            <p class="eyebrow">Before you submit</p>
+            <ul class="bullets" style="margin-top:10px;font-size:13.5px">
+              <li>Read it aloud. Anything you stumble on, cut.</li>
+              <li>Could another ZS analyst have written this sentence? Then delete it.</li>
+              <li>Does it answer "why now" before "why us"?</li>
+              <li>Is there one moment a stranger would remember?</li>
+              <li>Have you named the India problem specifically?</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PROFILE ============ -->
+      <section class="view" id="v-profile" hidden>
+        <div class="sechead"><h2>Your profile</h2></div>
+        <p class="dek">Everything in this app recalculates from here. Change a number and the school ranking, the odds and the timeline all move with it.</p>
+        <div class="grid g2">
+          <div class="card">
+            <p class="eyebrow">The basics</p>
+            <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:12px">
+              <label class="fld"><span>Name</span><input type="text" id="pName"></label>
+              <label class="fld"><span>Age at matriculation</span><input type="number" id="pAge" min="20" max="45"></label>
+              <label class="fld"><span>Years of experience</span><input type="number" id="pExp" min="0" max="20" step="0.5"></label>
+              <label class="fld"><span>GRE (total)</span><select id="pGre"><option>320</option><option>325</option><option>327</option><option>330</option><option>332</option><option>335</option></select></label>
+              <label class="fld"><span>CGPA / 10</span><input type="number" id="pCgpa" min="0" max="10" step="0.1"></label>
+              <label class="fld"><span>Target intake</span><select id="pIntake"><option>Aug 2027</option><option>Jan 2028</option><option>Aug 2028</option></select></label>
+            </div>
+          </div>
+          <div class="card">
+            <p class="eyebrow">What matters to you</p>
+            <p class="dim" style="font-size:13px;margin:6px 0 14px">Drag these. The school ranking updates live.</p>
+            <div id="weights"></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <p class="eyebrow">Notes to self</p>
+          <p class="dim" style="font-size:13px;margin:6px 0 10px">Anything you want to remember — conversations with alumni, doubts, things to ask.</p>
+          <textarea id="pNotes" style="min-height:150px" placeholder="Write anything here."></textarea>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <p class="eyebrow">Danger zone</p>
+          <p class="dim" style="font-size:13px;margin:6px 0 10px">Everything lives in this browser. Export regularly if you switch devices.</p>
+          <div class="row">
+            <button class="btn" id="exportBtn2"><svg><use href="#i-dl"/></svg>Export everything</button>
+            <button class="btn" id="importBtn2"><svg><use href="#i-up"/></svg>Import</button>
+            <button class="btn" id="resetBtn" style="color:var(--risk);border-color:var(--risk)">Reset all data</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ AI CONSULTANT ============ -->
+      <section class="view" id="v-ai" hidden></section>
+
+      <!-- ============ SOURCES ============ -->
+      <section class="view" id="v-sources" hidden>
+        <div class="sechead"><h2>Sources &amp; accuracy</h2></div>
+        <p class="dek">Applications get written from this data, so every claim carries its provenance. Nothing here is presented as more certain than it is. Where something could not be confirmed against a primary source it says so, rather than showing a plausible guess.</p>
+        <div id="sourcesBody"></div>
+      </section>
+
+      <!-- ============ PLAN ============ -->
+      <section class="view" id="v-plan" hidden>
+        <div class="sechead"><h2>The plan</h2><span class="tag mono" id="planProg"></span></div>
+        <p class="dek">Fourteen months, in order. Tick things off — it saves. Round 1 is weeks away; Round 2 in January is the honest target unless the GRE is already banked.</p>
+        <div id="planBody"></div>
+      </section>
+    </main>
+
+    <nav class="mobnav" id="mobnav"></nav>
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <header>
+    <div style="flex:1;min-width:0">
+      <h2 id="drawerTitle"></h2>
+      <p class="ssub" id="drawerSub"></p>
+    </div>
+    <button class="iconbtn" id="drawerClose" aria-label="Close"><svg><use href="#i-x"/></svg></button>
+  </header>
+  <div class="body" id="drawerBody"></div>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script src="answers.js"></script>
+<script src="app.js"></script>
+<script src="ai.js"></script>
+</body>
+</html>
