@@ -5,7 +5,7 @@ compatibility_flags = ["nodejs_compat"]
 
 # Public by design — a Google client ID is not a secret.
 [vars]
-GOOGLE_CLIENT_ID = "731324902040-l21jb2hrog2n9pq8htidvgub8r84r3eq.apps.googleusercontent.com"
+GOOGLE_CLIENT_ID = "731324902040-ul9ao0h6jbfq1ppam5peq19e5vdbm8gp.apps.googleusercontent.com"
 
 # The two secrets are NOT in this file. Set them once with:
 #   wrangler secret put ANTHROPIC_API_KEY
